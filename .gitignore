@@ -1,0 +1,50 @@
+# ========================
+# Laravel
+# ========================
+.env
+/vendor/
+/node_modules/
+/public/hot
+/public/storage
+/storage/*.key
+/storage/framework/cache/
+/storage/framework/sessions/
+/storage/framework/views/
+/bootstrap/cache/
+composer.lock
+package-lock.json
+
+# ========================
+# Docker
+# ========================
+docker-compose.override.yml
+
+# ========================
+# Системные файлы
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Логи
+# ========================
+*.log
+*.logs
+logs/
+
+# ========================
+# IDE
+# ========================
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# ========================
+# Тестовые данные
+# ========================
+/tests/Output/
+
+# Блокируем все .env файлы
+**/.env
+**/.env.*
