@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  users-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: divine_users
+      POSTGRES_USER: divine_user
+      POSTGRES_PASSWORD: user_password
+    volumes:
+      - users-db-data:/var/lib/postgresql/data
+
+  map-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: divine_map
+      POSTGRES_USER: divine_user
+      POSTGRES_PASSWORD: user_password
+    volumes:
+      - map-db-data:/var/lib/postgresql/data
+
+  calendar-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: divine_calendar
+      POSTGRES_USER: divine_user
+      POSTGRES_PASSWORD: user_password
+    volumes:
+      - calendar-db-data:/var/lib/postgresql/data
+
+  users-service:
+    build:
+      context: ./users-service
+    ports:
+      - "8001:8000"
+    environment:
+      DB_HOST: users-db
+      DB_PORT: 5432
+      DB_DATABASE: divine_users
+      DB_USERNAME: divine_user
+      DB_PASSWORD: user_password
+    depends_on:
+      - users-db
+
+  map-service:
+    build:
+      context: ./map-service
+    ports:
+      - "8002:8000"
+    environment:
+      DB_HOST: map-db
+      DB_PORT: 5432
+      DB_DATABASE: divine_map
+      DB_USERNAME: divine_user
+      DB_PASSWORD: user_password
+    depends_on:
+      - map-db
+
+  calendar-service:
+    build:
+      context: ./calendar-service
+    ports:
+      - "8003:8000"
+    environment:
+      DB_HOST: calendar-db
+      DB_PORT: 5432
+      DB_DATABASE: divine_calendar
+      DB_USERNAME: divine_user
+      DB_PASSWORD: user_password
+      MAP_SERVICE_URL: http://map-service:8000
+    depends_on:
+      - calendar-db
+      - map-service
+
+volumes:
+  users-db-data:
+  map-db-data:
+  calendar-db-data:
